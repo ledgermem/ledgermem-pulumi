@@ -1,0 +1,3 @@
+name: ledgermem-example
+runtime: nodejs
+description: Example LedgerMem stack provisioned with Pulumi.

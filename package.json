@@ -1,0 +1,31 @@
+{
+  "name": "@pulumi/ledgermem",
+  "version": "0.1.0",
+  "description": "Pulumi provider for LedgerMem (workspaces, API keys, webhooks).",
+  "license": "Apache-2.0",
+  "homepage": "https://proofly.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ledgermem/ledgermem-pulumi.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.130.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
