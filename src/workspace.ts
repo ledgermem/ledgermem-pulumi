@@ -76,6 +76,14 @@ const workspaceProvider: pulumi.dynamic.ResourceProvider = {
     (["name", "slug", "plan", "retentionDays"] as const).forEach((k) => {
       if (olds[k] !== news[k]) changed.push(k);
     });
+    // The workspace slug is part of every workspace-scoped URL on the API
+    // and is immutable server-side — PATCH silently ignores it. Treating a
+    // slug change as an update lets Pulumi report `success` while the
+    // server keeps the old slug, so subsequent reads diff forever. Force a
+    // replace so the new slug actually takes effect.
+    if (olds.slug !== news.slug) {
+      replaces.push("slug");
+    }
     return { changes: changed.length > 0, replaces };
   },
 };
