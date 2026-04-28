@@ -96,7 +96,8 @@ export class Workspace extends pulumi.dynamic.Resource {
         workspaceId: undefined,
         createdAt: undefined,
       },
-      opts,
+      // Keep the admin apiKey out of plaintext stack state.
+      { ...opts, additionalSecretOutputs: ["apiKey"] },
     );
   }
 }

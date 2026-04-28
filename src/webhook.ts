@@ -76,7 +76,16 @@ const webhookProvider: pulumi.dynamic.ResourceProvider = {
   async diff(_id: string, olds: WebhookOutputs, news: WebhookInputs) {
     const replaces: string[] = [];
     if (olds.workspaceId !== news.workspaceId) replaces.push("workspaceId");
-    return { changes: true, replaces };
+    // Only report changes when something actually differs — the previous
+    // implementation always returned `changes: true`, which forced an
+    // update on every `pulumi up` even when nothing changed.
+    const changed =
+      replaces.length > 0 ||
+      olds.url !== news.url ||
+      JSON.stringify(olds.events ?? []) !== JSON.stringify(news.events ?? []) ||
+      olds.secret !== news.secret ||
+      (olds.active ?? true) !== (news.active ?? true);
+    return { changes: changed, replaces };
   },
 };
 
@@ -87,7 +96,9 @@ export class Webhook extends pulumi.dynamic.Resource {
   constructor(name: string, args: WebhookArgs, opts?: pulumi.CustomResourceOptions) {
     super(webhookProvider, name, args, {
       ...opts,
-      additionalSecretOutputs: ["secret"],
+      // `secret` is the webhook signing key; `apiKey` is the admin
+      // credential used to manage the webhook. Both must be encrypted.
+      additionalSecretOutputs: ["secret", "apiKey"],
     });
   }
 }

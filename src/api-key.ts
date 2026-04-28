@@ -88,7 +88,10 @@ export class ApiKey extends pulumi.dynamic.Resource {
         ...args,
         secret: undefined,
       },
-      { ...opts, additionalSecretOutputs: ["secret"] },
+      // The admin `apiKey` used to provision this resource is itself a
+      // long-lived credential — keep it out of plain-text state, just like
+      // the per-resource `secret` we expose to callers.
+      { ...opts, additionalSecretOutputs: ["secret", "apiKey"] },
     );
   }
 }
