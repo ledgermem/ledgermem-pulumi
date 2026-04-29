@@ -74,7 +74,7 @@ const apiKeyProvider: pulumi.dynamic.ResourceProvider = {
 };
 
 /**
- * An API key for a LedgerMem workspace. The plaintext `secret` is exposed
+ * An API key for a Mnemo workspace. The plaintext `secret` is exposed
  * once on creation and stored in the Pulumi state — protect your stack.
  */
 export class ApiKey extends pulumi.dynamic.Resource {

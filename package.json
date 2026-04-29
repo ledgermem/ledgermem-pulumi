@@ -1,12 +1,12 @@
 {
-  "name": "@pulumi/ledgermem",
+  "name": "@pulumi/getmnemo",
   "version": "0.1.0",
-  "description": "Pulumi provider for LedgerMem (workspaces, API keys, webhooks).",
+  "description": "Pulumi provider for Mnemo (workspaces, API keys, webhooks).",
   "license": "Apache-2.0",
-  "homepage": "https://proofly.dev",
+  "homepage": "https://getmnemo.xyz",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ledgermem/ledgermem-pulumi.git"
+    "url": "git+https://github.com/getmnemo/getmnemo-pulumi.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

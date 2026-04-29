@@ -90,7 +90,7 @@ const webhookProvider: pulumi.dynamic.ResourceProvider = {
 };
 
 /**
- * A webhook subscription on a LedgerMem workspace.
+ * A webhook subscription on a Mnemo workspace.
  */
 export class Webhook extends pulumi.dynamic.Resource {
   constructor(name: string, args: WebhookArgs, opts?: pulumi.CustomResourceOptions) {

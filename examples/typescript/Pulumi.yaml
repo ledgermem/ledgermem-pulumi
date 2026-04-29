@@ -1,3 +1,3 @@
-name: ledgermem-example
+name: getmnemo-example
 runtime: nodejs
-description: Example LedgerMem stack provisioned with Pulumi.
+description: Example Mnemo stack provisioned with Pulumi.

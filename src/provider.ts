@@ -1,9 +1,9 @@
 // Shared HTTP client used by every dynamic resource provider in this package.
 //
-// We deliberately avoid pulumi-tf-bridge — LedgerMem is a SaaS API, so a
+// We deliberately avoid pulumi-tf-bridge — Mnemo is a SaaS API, so a
 // thin fetch-based layer is simpler than running a Go bridge for an HTTP CRUD.
 
-const DEFAULT_BASE_URL = "https://api.proofly.dev";
+const DEFAULT_BASE_URL = "https://api.getmnemo.xyz";
 
 export interface ProviderConfig {
   apiKey: string;
@@ -15,11 +15,11 @@ export interface ProviderConfig {
  * Throws if no API key is available — fail fast at preview time.
  */
 export function resolveConfig(cfg: Partial<ProviderConfig> = {}): ProviderConfig {
-  const apiKey = cfg.apiKey ?? process.env.LEDGERMEM_API_KEY ?? "";
-  const baseUrl = cfg.baseUrl ?? process.env.LEDGERMEM_API_URL ?? DEFAULT_BASE_URL;
+  const apiKey = cfg.apiKey ?? process.env.GETMNEMO_API_KEY ?? "";
+  const baseUrl = cfg.baseUrl ?? process.env.GETMNEMO_API_URL ?? DEFAULT_BASE_URL;
   if (!apiKey) {
     throw new Error(
-      "ledgermem: no API key — set apiKey on the resource or LEDGERMEM_API_KEY env var",
+      "getmnemo: no API key — set apiKey on the resource or GETMNEMO_API_KEY env var",
     );
   }
   return { apiKey, baseUrl };
@@ -31,13 +31,13 @@ export interface ApiRequest {
   body?: unknown;
 }
 
-export class LedgerMemApiError extends Error {
+export class MnemoApiError extends Error {
   constructor(
     public statusCode: number,
     public body: string,
   ) {
-    super(`ledgermem api: ${statusCode} ${body}`);
-    this.name = "LedgerMemApiError";
+    super(`getmnemo api: ${statusCode} ${body}`);
+    this.name = "MnemoApiError";
   }
 }
 
@@ -54,7 +54,7 @@ export async function callApi<T>(
     method: req.method,
     headers: {
       Accept: "application/json",
-      "User-Agent": "@pulumi/ledgermem",
+      "User-Agent": "@pulumi/getmnemo",
       Authorization: `Bearer ${cfg.apiKey}`,
       ...(req.body !== undefined ? { "Content-Type": "application/json" } : {}),
     },
@@ -62,7 +62,7 @@ export async function callApi<T>(
   };
   const res = await fetch(url, init);
   if (!res.ok) {
-    throw new LedgerMemApiError(res.status, await res.text());
+    throw new MnemoApiError(res.status, await res.text());
   }
   if (res.status === 204) {
     return undefined as unknown as T;

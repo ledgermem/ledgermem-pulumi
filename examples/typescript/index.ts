@@ -2,7 +2,7 @@
 // a webhook that fires on memory-write events.
 
 import * as pulumi from "@pulumi/pulumi";
-import { Workspace, ApiKey, Webhook } from "@pulumi/ledgermem";
+import { Workspace, ApiKey, Webhook } from "@pulumi/getmnemo";
 
 const acme = new Workspace("acme", {
   name: "Acme Corp",
@@ -19,7 +19,7 @@ const ciKey = new ApiKey("ci", {
 
 new Webhook("audit-webhook", {
   workspaceId: acme.id,
-  url: "https://hooks.acme.example/ledgermem",
+  url: "https://hooks.acme.example/getmnemo",
   events: ["memory.created", "memory.updated", "memory.deleted"],
   secret: "change-me",
 });

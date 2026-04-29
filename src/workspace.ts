@@ -89,7 +89,7 @@ const workspaceProvider: pulumi.dynamic.ResourceProvider = {
 };
 
 /**
- * A LedgerMem tenant workspace.
+ * A Mnemo tenant workspace.
  */
 export class Workspace extends pulumi.dynamic.Resource {
   public readonly workspaceId!: pulumi.Output<string>;

@@ -1,30 +1,30 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { callApi, resolveConfig, LedgerMemApiError } from "../src/provider";
+import { callApi, resolveConfig, MnemoApiError } from "../src/provider";
 
 // We exercise the HTTP layer (which every dynamic resource provider sits on
 // top of) rather than the dynamic providers themselves — the latter requires
 // a Pulumi engine to drive the lifecycle hooks.
 
 describe("resolveConfig", () => {
-  const orig = process.env.LEDGERMEM_API_KEY;
+  const orig = process.env.GETMNEMO_API_KEY;
   afterEach(() => {
-    process.env.LEDGERMEM_API_KEY = orig;
+    process.env.GETMNEMO_API_KEY = orig;
   });
 
   test("uses explicit apiKey", () => {
     const cfg = resolveConfig({ apiKey: "lm_explicit" });
     expect(cfg.apiKey).toBe("lm_explicit");
-    expect(cfg.baseUrl).toBe("https://api.proofly.dev");
+    expect(cfg.baseUrl).toBe("https://api.getmnemo.xyz");
   });
 
   test("falls back to env var", () => {
-    process.env.LEDGERMEM_API_KEY = "lm_env";
+    process.env.GETMNEMO_API_KEY = "lm_env";
     const cfg = resolveConfig();
     expect(cfg.apiKey).toBe("lm_env");
   });
 
   test("throws when no key is available", () => {
-    delete process.env.LEDGERMEM_API_KEY;
+    delete process.env.GETMNEMO_API_KEY;
     expect(() => resolveConfig()).toThrow(/no API key/);
   });
 });
@@ -54,7 +54,7 @@ describe("callApi", () => {
     expect(init.body).toBe(JSON.stringify({ name: "Acme" }));
   });
 
-  test("throws LedgerMemApiError on non-2xx", async () => {
+  test("throws MnemoApiError on non-2xx", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
@@ -68,6 +68,6 @@ describe("callApi", () => {
         { apiKey: "lm_test", baseUrl: "https://api.example.com" },
         { method: "GET", path: "/v1/admin/workspaces/ws_x" },
       ),
-    ).rejects.toBeInstanceOf(LedgerMemApiError);
+    ).rejects.toBeInstanceOf(MnemoApiError);
   });
 });
